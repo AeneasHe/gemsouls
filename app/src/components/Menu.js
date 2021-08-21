@@ -1,19 +1,24 @@
-import { useRouter } from 'next/router'
+import { Link } from "react-router-dom";
+import React from "react";
+
 
 function MenuButton(props) {
-    const router = useRouter()
 
-    const color = router.asPath === props.link ? 'bg-red-200 hover:bg-red-600' : 'bg-blue-200 hover:bg-blue-600'
+    // const location = useLocation();
 
-    const handleClick = () => {
-        console.log("click")
-        router.push(props.link)
-    }
+    var color = 'bg-blue-200 hover:bg-blue-600'
+
+    // React.useEffect(() => {
+    //     if (location.pathname === props.link) {
+    //         color = 'bg-red-200 hover:bg-red-600'
+    //     }
+    // }, [location]);
+
 
     return (
-        <button className={"p-1 transition duration-500 ease-in-out  transform hover:-translate-y-1 hover:scale-110 " + color} onClick={handleClick}>
-            {props.label}
-        </button>
+        <div className={"p-1 transition duration-500 ease-in-out  transform hover:-translate-y-1 hover:scale-110 " + color}>
+            <a href={props.link}> {props.label} </a>
+        </div>
     )
 }
 

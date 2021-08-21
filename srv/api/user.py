@@ -1,9 +1,12 @@
 import wpath
 from app import *
 
-from fastapi import Depends, HTTPException, status
+from fastapi import FastAPI, HTTPException, Depends, Request
+from fastapi.responses import JSONResponse
+from fastapi_jwt_auth import AuthJWT
+from fastapi_jwt_auth.exceptions import AuthJWTException
+from pydantic import BaseModel
 
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 fake_users_db = {
     "luna": {
@@ -23,82 +26,40 @@ fake_users_db = {
 }
 
 
-def fake_hash_password(password: str):
-    # return "fakehashed" + password
-
-    return password
-
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-
 class User(BaseModel):
     username: str
-    email: Optional[str] = None
-    full_name: Optional[str] = None
-    disabled: Optional[bool] = None
-
-
-class UserInDB(User):
-    hashed_password: str
-
-
-def get_user(db, username: str):
-    if username in db:
-        user_dict = db[username]
-        return UserInDB(**user_dict)
-
-
-def fake_decode_token(token):
-    user = get_user(fake_users_db, token)
-    return user
-
-
-async def get_current_user(token: str = Depends(oauth2_scheme)):
-    user = fake_decode_token(token)
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authentication credentials",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    return user
-
-
-async def get_current_active_user(current_user: User = Depends(get_current_user)):
-    if current_user.disabled:
-        raise HTTPException(status_code=400, detail="Inactive user")
-    return current_user
-
-
-class FormData(BaseModel):
     password: str
-    username: str
+
+
+class Settings(BaseModel):
+    authjwt_secret_key: str = "secret"
+
+
+@AuthJWT.load_config
+def get_config():
+    return Settings()
+
+
+@app.exception_handler(AuthJWTException)
+def authjwt_exception_handler(request: Request, exc: AuthJWTException):
+    return JSONResponse(status_code=exc.status_code, content={"detail": exc.message})
 
 
 @app.post("/token")
-async def login(form_data: FormData):
+async def login(user: User, Authorize: AuthJWT = Depends()):
 
-    wpath.print_r(form_data)
+    wpath.print_r(user)
 
-    # 查询用户信息
-    user_dict = fake_users_db.get(form_data.username)
-    if not user_dict:
-        raise HTTPException(status_code=400, detail="User not exist")
+    if user.username != "aeneas" or user.password != "123456":
+        raise HTTPException(status_code=401, detail="Bad username or password")
 
-    # 用户对象
-    user = UserInDB(**user_dict)
-
-    hashed_password = fake_hash_password(form_data.password)
-
-    wpath.print_y(f"{hashed_password}, {user.hashed_password}")
-
-    if not hashed_password == user.hashed_password:
-        raise HTTPException(status_code=400, detail="Incorrect username or password")
-
-    return {"access_token": user.username, "token_type": "bearer"}
+    access_token = Authorize.create_access_token(subject=user.username)
+    return {"access_token": access_token}
 
 
 @app.get("/user/me")
-async def read_users_me(current_user: User = Depends(get_current_active_user)):
-    return current_user
+def user(Authorize: AuthJWT = Depends()):
+    Authorize.jwt_required()
+
+    current_user = Authorize.get_jwt_subject()
+    return {"user": current_user}

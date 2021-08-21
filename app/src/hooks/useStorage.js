@@ -1,16 +1,15 @@
-import createPersistedState from 'use-persisted-state';
-
-const useToken = createPersistedState('token');
-
 
 const useStorage = () => {
-    const [token, _setToken] = useToken('');
-
-    let setToken = (_token) => {
-        console.log("set token:", _token)
-        _setToken(_token)
+    const getToken = () => {
+        var token = localStorage.getItem('token')
+        console.log("gettoken:", token)
+        return token
     }
-    return { token, setToken }
+    const setToken = (token) => {
+        console.log("settoken:", token)
+        localStorage.setItem('token', token)
+    }
+    return { getToken, setToken }
 }
 
 

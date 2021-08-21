@@ -11,3 +11,8 @@
 .msg-container {
     min-height:100px;
 }
+
+.login-input {
+    width:60%;
+    height:40px;
+}

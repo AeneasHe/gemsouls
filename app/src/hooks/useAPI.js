@@ -6,7 +6,7 @@ import useStorage from './useStorage'
 
 let useAPI = () => {
 
-  const { token, setToken } = useStorage()
+  const { getToken, setToken } = useStorage()
 
   let login = useCallback(async (url, params) => {
 
@@ -26,7 +26,8 @@ let useAPI = () => {
       var _data = await res.json();
 
       console.log("token response:", _data)
-      setToken(_data.access_tokens);
+
+      setToken(_data.access_token);
 
 
     } catch (err) {
@@ -39,6 +40,7 @@ let useAPI = () => {
 
   let get = useCallback(async (url, params) => {
 
+    var token = getToken()
     console.log("get local token:", token)
 
     try {
@@ -61,11 +63,15 @@ let useAPI = () => {
       console.error(err);
       return null
     }
-  }, [token])
+  }, [])
 
 
 
   let post = useCallback(async (url, params) => {
+
+    var token = getToken()
+    console.log("get local token:", token)
+
 
     try {
       const res = await fetch("/api" + url, {
@@ -83,13 +89,12 @@ let useAPI = () => {
 
       var _data = await res.json();
 
-      setData(_data)
 
     } catch (err) {
       console.error(err);
       return null
     }
-  })
+  }, [])
 
 
 
