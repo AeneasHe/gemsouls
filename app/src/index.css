@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.msg-input {
+    width:80%;
+    height:40px;
+}
+
+.msg-container {
+    min-height:100px;
+}
