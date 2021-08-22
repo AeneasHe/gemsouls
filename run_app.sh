@@ -1,2 +1,2 @@
 cd app
-yarn dev
+yarn start

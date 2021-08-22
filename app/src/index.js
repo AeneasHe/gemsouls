@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 
 import { BrowserRouter as Router } from 'react-router-dom'
 
+console.log("====>host:", process.env.REACT_APP_HOST)
 
 ReactDOM.render(
   // <React.StrictMode>
