@@ -4,27 +4,63 @@ import useWebsocket from '../hooks/useWebsocket'
 import Chatbar from '../components/Chatbar'
 import Message from '../components/Message'
 import Info from '../components/Info'
+import useStorage from '../hooks/useStorage'
+
 
 export default function Chatroom() {
 
     const [msgSend, setMsgSend] = useState('')
+    const { addMessage, getMessage, clearMessage } = useStorage()
+
+    const [msgIds, setMsgIds] = useState([])
+
 
     const [msgs, dispatch] = useReducer((state, action) => {
+        var msg
         switch (action.type) {
+
             case 'recieve':
-                return [...state,
-                {
+                msg = {
                     id: action.id,
                     value: action.value,
-                    type: "recieve"
-                }]
+                    type: "recieve",
+
+                }
+                if (!action.recover) {
+                    if (msg.id !== "welcome") {
+                        console.log("===>add:", msg)
+                        addMessage(msg)
+                    }
+                }
+                if (msgIds.indexOf(msg.id) > -1) {
+                    return [...state]
+                } else {
+                    setMsgIds([...msgIds, msg.id])
+                    return [...state, msg]
+                }
+
             case 'send':
-                return [...state,
-                {
+                msg = {
                     id: action.id,
                     value: action.value,
                     type: "send"
-                }]
+                }
+                if (!action.recover) {
+                    if (msg.id !== "welcome") {
+                        addMessage(msg)
+                    }
+                }
+
+                if (msgIds.indexOf(msg.id) > -1) {
+                    return [...state]
+                } else {
+                    setMsgIds([...msgIds, msg.id])
+                    return [...state, msg]
+                }
+
+            case 'clear':
+                return []
+
             default:
                 console.log(action)
         }
@@ -34,8 +70,9 @@ export default function Chatroom() {
     const [info, setInfo] = useState(null)
 
 
-    const { sendMessage, msgRecieve } = useWebsocket(dispatch)
+    const { sendMessage } = useWebsocket(dispatch)
 
+    // 发送消息给ws服务器
     const onSendMessage = useCallback(() => {
         if (msgSend) {
             setInfo("")
@@ -50,11 +87,30 @@ export default function Chatroom() {
         }
     }, [dispatch, msgSend, sendMessage, setInfo])
 
+    const onClearMessage = useCallback(() => {
+        setMsgIds([])
+        dispatch({ type: "clear" })
+        clearMessage()
+    })
+    // 初始欢迎消息
     useEffect(() => {
-        var id = "recieve@" + (new Date()).valueOf().toString()
-
-        dispatch({ value: "welcome to gemsouls chatroom", type: "recieve", id: id })
+        //var id = "recieve@" + (new Date()).valueOf().toString()
+        dispatch({ value: "welcome to gemsouls chatroom", type: "recieve", id: "welcome" })
     }, [])
+
+    // 从历史消息里还原
+    useEffect(() => {
+        var _msgs = getMessage()
+        if (_msgs) {
+            console.log("====>", typeof _msgs)
+            _msgs.map((m) => {
+                m.recover = true
+                return dispatch(m)
+            })
+        }
+    }, [])
+
+    // console.log("===>msgIds:", msgIds)
 
     return (
         <div className="container mx-auto" >
@@ -74,12 +130,9 @@ export default function Chatroom() {
             </div>
 
             <div className="flex flex-col justify-center w-30 bg-gray-50 my-10">
-                <Chatbar  {...{ msgSend, setMsgSend, onSendMessage }} />
+                <Chatbar  {...{ msgSend, setMsgSend, onSendMessage, onClearMessage }} />
                 <Info value={info} />
             </div>
-
-
-
         </div>
     )
 }

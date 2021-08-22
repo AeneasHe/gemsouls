@@ -9,7 +9,29 @@ const useStorage = () => {
         console.log("settoken:", token)
         localStorage.setItem('token', token)
     }
-    return { getToken, setToken }
+
+    const getMessage = () => {
+        return JSON.parse(localStorage.getItem('messages'))
+    }
+
+    const clearMessage = () => {
+        return localStorage.removeItem('messages')
+    }
+
+    const addMessage = (message) => {
+        var messages = getMessage()
+        console.log("messsages:", messages)
+
+        if (!messages) {
+            messages = []
+        }
+        messages.push(message)
+
+        localStorage.setItem('messages', JSON.stringify(messages))
+
+    }
+
+    return { getToken, setToken, getMessage, addMessage, clearMessage }
 }
 
 
