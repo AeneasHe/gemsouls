@@ -7,6 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router } from 'react-router-dom'
 
 console.log("====>host:", process.env.REACT_APP_HOST)
+console.log("====>port:", process.env.REACT_APP_PORT)
 
 ReactDOM.render(
   // <React.StrictMode>
