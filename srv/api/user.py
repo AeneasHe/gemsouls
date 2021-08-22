@@ -7,6 +7,8 @@ from fastapi_jwt_auth import AuthJWT
 from fastapi_jwt_auth.exceptions import AuthJWTException
 from pydantic import BaseModel
 
+import db
+
 
 class User(BaseModel):
     username: str
@@ -46,4 +48,18 @@ def user(Authorize: AuthJWT = Depends()):
     Authorize.jwt_required()
 
     current_user = Authorize.get_jwt_subject()
-    return {"username": current_user}
+
+    # return {"username": current_user}
+
+    user = db.gemsouls.user.find_one({"username": current_user})
+    user.pop("_id")
+    return user
+
+
+@app.post("/user/register")
+def user_register(user: User):
+
+    # wpath.print_r(user)
+    db.gemsouls.user.insert_one({"username": user.username, "password": user.password})
+
+    return {"msg": "successs"}

@@ -5,7 +5,10 @@ import Menu from "./components/Menu";
 
 import Home from "./views/Home";
 import Chatroom from './views/Chatroom';
+
 import UserProfile from './views/user';
+
+import UserRegister from './views/user/register';
 import UserLogin from './views/user/login';
 import UserLogout from './views/user/logout';
 
@@ -38,6 +41,9 @@ function App() {
               <Route path="/user/login">
                 <UserLogin />
               </Route>
+
+
+
               <Route path="/user/logout">
                 <UserLogout />
               </Route>
@@ -50,7 +56,22 @@ function App() {
               </Route>
             </Switch>
           </Router> :
-          <UserLogin />
+          <>
+            <Router>
+              <Switch>
+
+                <Route path="/user/register">
+                  <UserRegister />
+                </Route>
+
+                <Route path="/user/login">
+                  <UserLogin />
+                </Route>
+
+              </Switch>
+            </Router>
+
+          </>
       }
     </div>
   );

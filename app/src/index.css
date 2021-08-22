@@ -4,7 +4,7 @@
 
 
 .msg-input {
-    width:80%;
+    width:200px;
     height:40px;
 }
 
@@ -13,6 +13,11 @@
 }
 
 .login-input {
-    width:60%;
+    width:200px;
     height:40px;
+    padding: 5px;
+}
+
+.input-label{
+
 }

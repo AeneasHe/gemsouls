@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 
 
 const wsUrl = "ws://127.0.0.1:8000/ws"
@@ -6,14 +6,14 @@ const wsUrl = "ws://127.0.0.1:8000/ws"
 function useWebsocket(dispatch) {
 
     const [ws, setWs] = useState(null)
-    const [msgRecieve, setMsgRecieve] = useState('')
+    const [msgRecieve,] = useState('')
 
     const sendMessage = useCallback((msg) => {
         if (ws) {
             console.log('send msg:', msg)
             ws.send(msg)
         }
-    })
+    }, [ws])
 
     useEffect(() => {
         var _ws = new WebSocket(wsUrl)
@@ -39,11 +39,12 @@ function useWebsocket(dispatch) {
         }
 
         setWs(_ws)
+
         return () => {
             console.log('close 2')
             _ws.close()
         }
-    }, [])
+    }, [dispatch])
 
     return { sendMessage, msgRecieve }
 

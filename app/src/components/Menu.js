@@ -40,16 +40,33 @@ export default function Menu() {
 
     return (
         <div className="mx-auto m-2">
-            <div className="flex flex-row justify-start items-start">
-                <Nav label="Home" link="/" />
-                <Nav label="ChatRoom" link="/chatroom" />
+            <div className="flex flex-row justify-around items-start">
+
                 {token ?
+                    (
+                        <>
+                            <div className="flex flex-row justify-start">
+                                <Nav label="Home" link="/" />
+                                <Nav label="ChatRoom" link="/chatroom" />
+                            </div>
+                            <div className="flex flex-row justify-start">
+                                <Nav label="Profile" link="/user" />
+                                <Nav label="Logout" link="/user/logout" />
+                            </div>
+                        </>
+                    )
+                    :
                     (<>
-                        <Nav label="Profile" link="/user" />
-                        <Nav label="Logout" link="/user/logout" />
+                        <div className="flex flex-row justify-start">
+                            <Nav label="Home" link="/" />
+                        </div>
+                        <div className="flex flex-row justify-start">
+                            <Nav label="Login" link="/user/login" />
+                            <Nav label="Register" link="/user/register" />
+                        </div>
+
                     </>
                     )
-                    : <Nav label="Login" link="/user/login" />
 
                 }
 

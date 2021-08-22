@@ -87,11 +87,13 @@ export default function Chatroom() {
         }
     }, [dispatch, msgSend, sendMessage, setInfo])
 
+    // 清空消息
     const onClearMessage = useCallback(() => {
         setMsgIds([])
         dispatch({ type: "clear" })
         clearMessage()
-    })
+    }, [setMsgIds, clearMessage, dispatch])
+
     // 初始欢迎消息
     useEffect(() => {
         //var id = "recieve@" + (new Date()).valueOf().toString()
@@ -102,7 +104,7 @@ export default function Chatroom() {
     useEffect(() => {
         var _msgs = getMessage()
         if (_msgs) {
-            console.log("====>", typeof _msgs)
+            // console.log("====>", typeof _msgs)
             _msgs.map((m) => {
                 m.recover = true
                 return dispatch(m)
