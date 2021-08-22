@@ -29,10 +29,11 @@ let useAPI = () => {
 
       setToken(_data.access_token);
 
+      return true
 
     } catch (err) {
       console.error(err);
-      return null
+      return false
     }
   })
 
@@ -57,7 +58,9 @@ let useAPI = () => {
 
       var _data = await res.json();
 
-      console.log("get:", _data);
+      console.log("get usename:", _data);
+
+      return _data
 
     } catch (err) {
       console.error(err);
@@ -89,6 +92,7 @@ let useAPI = () => {
 
       var _data = await res.json();
 
+      return _data;
 
     } catch (err) {
       console.error(err);

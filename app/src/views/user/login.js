@@ -1,26 +1,26 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import useAPI from '../../hooks/useAPI'
-import useStorage from '../../hooks/useStorage'
+import { useHistory } from "react-router-dom";
 
-function Login() {
+
+
+function Login(props) {
     const [username, setUsername] = useState('aeneas')
     const [password, setPassword] = useState('123456')
-    const { getToken, setToken } = useStorage()
-
+    let history = useHistory();
     const api = useAPI()
+
+
+
 
     const onLogin = useCallback((e) => {
         console.log('login')
-        api.login('/token', { username, password })
+        const satus = api.login('/token', { username, password })
+        if (satus) {
+            history.push('/chatroom')
+        }
 
-    }, [username, password])
-
-    const onProfile = useCallback((e) => {
-        console.log('profile')
-        api.get('/user/me')
-
-    }, [])
-
+    }, [api, username, password, history])
 
     return (<>
         <div className="flex justify-center ">
@@ -40,9 +40,7 @@ function Login() {
                     <div className="my-4">
                         <div className="bg-blue-400 text-white p-1 w-40" onClick={onLogin}>login </div>
                     </div>
-                    <div className="my-4">
-                        <div className="bg-blue-400 text-white p-1 w-40" onClick={onProfile}>get user </div>
-                    </div>
+
                 </div>
             </form>
 

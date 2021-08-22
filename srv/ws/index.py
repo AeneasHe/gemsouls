@@ -9,7 +9,7 @@ async def websocket_endpoint(websocket: WebSocket):
         try:
             data = await websocket.receive_text()
             print(f"recieve data:{data}")
-            await websocket.send_text(f"hello,{data}")
+            await websocket.send_text(f"{data}")
 
         except Exception as e:
             print(e)

@@ -8,28 +8,45 @@ import Chatroom from './views/Chatroom';
 import UserLogin from './views/user/login';
 import UserProfile from './views/user';
 
+import { useState, useEffect } from 'react'
+import useStorage from './hooks/useStorage'
+
+
 function App() {
+  const { getToken } = useStorage()
+
+  const [token, setToken] = useState(null)
+
+  useEffect(() => {
+    setToken(getToken())
+  }, [setToken, getToken])
+
   return (
     <div>
       <Menu />
-      <Router>
-        <Switch>
+      {
+        token ?
 
-          <Route path="/chatroom">
-            <Chatroom />
-          </Route>
+          <Router>
+            <Switch>
 
-          <Route path="/user/login">
-            <UserLogin />
-          </Route>
-          <Route path="/user">
-            <UserProfile />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
-      </Router>
+              <Route path="/chatroom">
+                <Chatroom />
+              </Route>
+
+              <Route path="/user/login">
+                <UserLogin />
+              </Route>
+              <Route path="/user">
+                <UserProfile />
+              </Route>
+              <Route path="/">
+                <Home />
+              </Route>
+            </Switch>
+          </Router> :
+          <UserLogin />
+      }
     </div>
   );
 }

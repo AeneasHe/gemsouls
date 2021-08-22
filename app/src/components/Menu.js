@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import useStorage from '../hooks/useStorage'
 
 
 function MenuButton(props) {
@@ -13,6 +14,7 @@ function MenuButton(props) {
     //         color = 'bg-red-200 hover:bg-red-600'
     //     }
     // }, [location]);
+
 
 
     return (
@@ -29,12 +31,24 @@ function Nav(props) {
 }
 
 export default function Menu() {
+    const { getToken } = useStorage()
+    const [token, setToken] = useState(null)
+
+    useEffect(() => {
+        setToken(getToken())
+    }, [setToken, getToken])
+
     return (
         <div className="mx-auto m-2">
             <div className="flex flex-row justify-start items-start">
                 <Nav label="Home" link="/" />
                 <Nav label="ChatRoom" link="/chatroom" />
-                <Nav label="Login" link="/user/login" />
+                {token ?
+                    <Nav label="Profile" link="/user" />
+                    : <Nav label="Login" link="/user/login" />
+
+                }
+
             </div>
         </div>
     )

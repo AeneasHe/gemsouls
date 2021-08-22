@@ -1,5 +1,5 @@
 
-import { useCallback, useState, useReducer } from 'react'
+import { useCallback, useState, useReducer, useEffect } from 'react'
 import useWebsocket from '../hooks/useWebsocket'
 import Chatbar from '../components/Chatbar'
 import Message from '../components/Message'
@@ -50,10 +50,11 @@ export default function Chatroom() {
         }
     }, [dispatch, msgSend, sendMessage, setInfo])
 
+    useEffect(() => {
+        var id = "recieve@" + (new Date()).valueOf().toString()
 
-
-
-    console.log("msgs:", msgs)
+        dispatch({ value: "welcome to gemsouls chatroom", type: "recieve", id: id })
+    }, [])
 
     return (
         <div className="container mx-auto" >
