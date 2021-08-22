@@ -2,13 +2,18 @@
 const useStorage = () => {
     const getToken = () => {
         var token = localStorage.getItem('token')
-        console.log("gettoken:", token)
+        //console.log("gettoken:", token)
         return token
     }
     const setToken = (token) => {
         console.log("settoken:", token)
         localStorage.setItem('token', token)
     }
+
+    const clearToken = (token) => {
+        localStorage.removeItem('token', token)
+    }
+
 
     const getMessage = () => {
         return JSON.parse(localStorage.getItem('messages'))
@@ -31,7 +36,7 @@ const useStorage = () => {
 
     }
 
-    return { getToken, setToken, getMessage, addMessage, clearMessage }
+    return { getToken, setToken, clearToken, getMessage, addMessage, clearMessage }
 }
 
 

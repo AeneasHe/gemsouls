@@ -5,8 +5,9 @@ import Menu from "./components/Menu";
 
 import Home from "./views/Home";
 import Chatroom from './views/Chatroom';
-import UserLogin from './views/user/login';
 import UserProfile from './views/user';
+import UserLogin from './views/user/login';
+import UserLogout from './views/user/logout';
 
 import { useState, useEffect } from 'react'
 import useStorage from './hooks/useStorage'
@@ -37,6 +38,10 @@ function App() {
               <Route path="/user/login">
                 <UserLogin />
               </Route>
+              <Route path="/user/logout">
+                <UserLogout />
+              </Route>
+
               <Route path="/user">
                 <UserProfile />
               </Route>

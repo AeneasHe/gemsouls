@@ -3,6 +3,11 @@ import { useEffect, useState, useCallback } from 'react';
 import useStorage from './useStorage'
 // import lscache from "lscache";
 
+export const encodeURL = (url, params = {}) => {
+  const json = JSON.stringify(params)
+  return `${url + encodeURIComponent(json)}`
+
+}
 
 let useAPI = () => {
 
@@ -35,7 +40,7 @@ let useAPI = () => {
       console.error(err);
       return false
     }
-  })
+  }, [setToken])
 
 
 
@@ -43,7 +48,7 @@ let useAPI = () => {
 
     var token = getToken()
     console.log("get local token:", token)
-
+    console.log('encodeurl:', encodeURL(url, params))
     try {
       const res = await fetch("/api" + url, {
         method: "GET",
@@ -66,7 +71,7 @@ let useAPI = () => {
       console.error(err);
       return null
     }
-  }, [])
+  }, [getToken])
 
 
 
@@ -98,7 +103,7 @@ let useAPI = () => {
       console.error(err);
       return null
     }
-  }, [])
+  }, [getToken])
 
 
 

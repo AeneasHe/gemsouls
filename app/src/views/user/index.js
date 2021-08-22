@@ -13,7 +13,10 @@ export default function Profile() {
         console.log('profile')
         api.get('/user/me').then(data => {
             console.log('data:', data)
-            setUsername(data.username)
+            if (data) {
+                setUsername(data.username)
+            }
+
         })
 
 

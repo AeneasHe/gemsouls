@@ -44,7 +44,11 @@ export default function Menu() {
                 <Nav label="Home" link="/" />
                 <Nav label="ChatRoom" link="/chatroom" />
                 {token ?
-                    <Nav label="Profile" link="/user" />
+                    (<>
+                        <Nav label="Profile" link="/user" />
+                        <Nav label="Logout" link="/user/logout" />
+                    </>
+                    )
                     : <Nav label="Login" link="/user/login" />
 
                 }

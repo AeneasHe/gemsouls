@@ -2,7 +2,8 @@ import { useState, useCallback, useEffect } from 'react'
 import useAPI from '../../hooks/useAPI'
 import { useHistory } from "react-router-dom";
 
-
+import { withRouter } from 'react-router-dom';
+import Info from '../../components/Info'
 
 function Login(props) {
     const [username, setUsername] = useState('aeneas')
@@ -10,15 +11,20 @@ function Login(props) {
     let history = useHistory();
     const api = useAPI()
 
-
+    const [info, setInfo] = useState(null)
 
 
     const onLogin = useCallback((e) => {
         console.log('login')
-        const satus = api.login('/token', { username, password })
-        if (satus) {
-            history.push('/chatroom')
-        }
+
+        api.login('/token', { username, password }).then(status => {
+            console.log("token status:", status)
+            if (status) {
+                history.push('/chatroom')
+                setInfo("登录成功，可能自动跳转不成功，请手动刷新")
+            }
+        })
+
 
     }, [api, username, password, history])
 
@@ -43,6 +49,7 @@ function Login(props) {
 
                 </div>
             </form>
+            <Info value={info} />
 
         </div>
     </>
@@ -51,4 +58,4 @@ function Login(props) {
 
 
 
-export default Login
+export default withRouter(Login)
