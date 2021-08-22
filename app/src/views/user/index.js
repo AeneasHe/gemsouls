@@ -26,12 +26,15 @@ export default function Profile() {
         onProfile()
     }, [onProfile])
 
-    return (<>
-        <h3>User profile</h3>
-
-        <div className="my-4">
-            username:{username}
+    return (<div className="flex flex-col justify-center w-10/12">
+        <div className="flex justify-center ">
+            <h3>User profile</h3>
         </div>
-    </>
+        <div className="mx-auto">
+            <div className="my-4">
+                username:{username}
+            </div>
+        </div>
+    </div>
     )
 }

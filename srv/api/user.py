@@ -40,7 +40,7 @@ async def login(user: User, Authorize: AuthJWT = Depends()):
     access_token = Authorize.create_access_token(
         subject=user.username, expires_time=3600 * 24 * 7
     )
-    return {"access_token": access_token}
+    return {"access_token": access_token, "username": user.username}
 
 
 @app.get("/user/me")

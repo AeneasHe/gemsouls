@@ -1,7 +1,6 @@
 import fetch from 'cross-fetch';
 import { useCallback } from 'react';
 import useStorage from './useStorage'
-// import lscache from "lscache";
 
 export const encodeURL = (url, params = {}) => {
   const json = JSON.stringify(params)
@@ -11,7 +10,7 @@ export const encodeURL = (url, params = {}) => {
 
 let useAPI = () => {
 
-  const { getToken, setToken } = useStorage()
+  const { getToken, setToken, setUsername } = useStorage()
 
   let login = useCallback(async (url, params) => {
 
@@ -33,6 +32,7 @@ let useAPI = () => {
       console.log("token response:", _data)
 
       setToken(_data.access_token);
+      setUsername(_data.username)
 
       return true
 
@@ -40,7 +40,7 @@ let useAPI = () => {
       console.error(err);
       return false
     }
-  }, [setToken])
+  }, [setToken, setUsername])
 
 
 
