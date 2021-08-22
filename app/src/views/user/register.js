@@ -20,7 +20,7 @@ function Login(props) {
         console.log('login')
 
         api.post('/user/register', { username, password }).then(_status => {
-            console.log("token status:", status)
+            console.log("token status:", _status)
             if (_status) {
                 setStatus(_status)
                 history.push('/chatroom')

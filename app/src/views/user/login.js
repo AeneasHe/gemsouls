@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import useAPI from '../../hooks/useAPI'
-import { useHistory, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 import { withRouter } from 'react-router-dom';
 import Info from '../../components/Info'
@@ -8,12 +8,11 @@ import Info from '../../components/Info'
 function Login(props) {
     const [username, setUsername] = useState('aeneas')
     const [password, setPassword] = useState('123456')
-    let history = useHistory();
     const api = useAPI()
 
     const [info, setInfo] = useState(null)
 
-    const [status, setStatus] = useState(false)
+    const [status,] = useState(false)
 
     const onLogin = useCallback((e) => {
         console.log('login')

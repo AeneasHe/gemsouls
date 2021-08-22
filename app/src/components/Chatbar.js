@@ -1,5 +1,4 @@
-import { SearchIcon, ChatAlt2Icon, XCircleIcon } from '@heroicons/react/outline';
-import { useState, useEffect } from 'react'
+import { ChatAlt2Icon, XCircleIcon } from '@heroicons/react/outline';
 
 
 

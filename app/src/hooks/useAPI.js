@@ -1,5 +1,5 @@
 import fetch from 'cross-fetch';
-import { useEffect, useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import useStorage from './useStorage'
 // import lscache from "lscache";
 

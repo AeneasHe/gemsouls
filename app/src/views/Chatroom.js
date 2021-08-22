@@ -110,6 +110,7 @@ export default function Chatroom() {
                 return dispatch(m)
             })
         }
+        // eslint-disable-next-line
     }, [])
 
     // console.log("===>msgIds:", msgIds)
